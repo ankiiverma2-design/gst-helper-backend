@@ -23,21 +23,27 @@ government's portal-upload format.
 
 ## Repository layout
 
+The **frontend lives at the repo root** (so Lovable detects it automatically),
+and the **backend lives in `server/`**.
+
 ```
-gst-helper-backend/            (repo)
-├── client/     → Frontend: Vite + React + TypeScript + Tailwind
-│   ├── src/
-│   │   ├── pages/     Upload, Dashboard, Invoices, Returns
-│   │   ├── components/ StatusBadge, StatCard
-│   │   ├── lib/       api client, types, INR formatting
-│   │   ├── store.tsx  shared app state
-│   │   └── App.tsx    layout + routing
+gst-helper-backend/            (repo root = the frontend app)
+├── src/                → Frontend: Vite + React + TypeScript + Tailwind
+│   ├── pages/          Upload, Dashboard, Invoices, Vendors, Returns
+│   ├── components/     StatusBadge, StatCard
+│   ├── lib/            api client, types, INR formatting
+│   ├── store.tsx       shared app state
+│   └── App.tsx         layout + routing
+├── index.html
+├── package.json        (frontend)
+├── vite.config.ts, tailwind.config.js, postcss.config.js, tsconfig*.json
+│
+├── server/             → Backend: zero-dependency Node API
+│   ├── src/            reconcile, gstr1/3b, hsn, parsers, vendor-followup, db, server
+│   ├── test/           33 passing tests
 │   └── package.json
-├── server/     → Backend: zero-dependency Node API
-│   ├── src/    reconcile, gstr3b, gstr1, server, types, sample-data
-│   ├── test/   9 passing tests
-│   └── package.json
-├── LOVABLE_FRONTEND.md   → how to (re)build/edit the UI in Lovable
+│
+├── LOVABLE_FRONTEND.md → API contract / how to build the UI in Lovable
 └── README.md
 ```
 
@@ -53,9 +59,8 @@ cd server
 npm start                # serves the API on http://localhost:3000
 ```
 
-**Terminal 2 — frontend:**
+**Terminal 2 — frontend (from the repo root):**
 ```bash
-cd client
 npm install              # installs React, Vite, Tailwind
 npm run dev              # opens the app on http://localhost:5173
 ```
@@ -64,32 +69,27 @@ Then open http://localhost:5173, click **“Use sample data”**, and hit
 **Reconcile** — you'll see the full flow with ₹30,000 claimable, ₹3,600 at risk,
 and ₹2,700 unclaimed.
 
-The frontend reads the backend URL from `VITE_API_BASE` (see `client/.env.example`)
-and you can also change it live on the Upload screen.
+The frontend reads the backend URL from `VITE_API_BASE` (see `.env.example`) and
+you can also change it live on the Upload screen.
 
 ---
 
 ## Using this with Lovable
 
-There are two ways, depending on what you want:
+Because the frontend is at the repo root, Lovable detects it automatically:
 
-### Option A — Edit/redesign the UI in Lovable (recommended)
-The frontend uses the exact stack Lovable works with (Vite + React + TypeScript +
-Tailwind), so you can iterate on the design in Lovable:
+1. In Lovable, **Connect to GitHub** and select this repository.
+2. Set the environment variable **`VITE_API_BASE`** to your deployed backend URL
+   (or connect Supabase and let Lovable wire the backend — see note below).
+3. Lovable renders the app; click **“Use sample data”** to see the full flow.
+4. Ask Lovable to restyle screens, add features, or connect Supabase for
+   database/auth. It edits `src/` directly.
 
-1. In Lovable, connect it to GitHub and select this repository.
-2. Point Lovable at the `client/` folder as the app.
-3. Set the environment variable `VITE_API_BASE` to your deployed backend URL.
-4. Ask Lovable to restyle screens, add components, etc. It will edit `client/src`.
-
-### Option B — Generate a fresh UI in Lovable against this API
-If you'd rather have Lovable generate the frontend from scratch, use the
-paste-ready prompt and full API contract in
-**[LOVABLE_FRONTEND.md](./LOVABLE_FRONTEND.md)**. Give Lovable your deployed
-backend URL and it will build a UI that calls the same endpoints.
-
-Either way, the **backend stays the same** — deploy it once (below) and both
-approaches talk to it.
+> **Backend options:** the frontend needs a backend for the GST logic. Either
+> deploy the Node API in `server/` (see Deploy below) and point `VITE_API_BASE`
+> at it, **or** let Lovable rebuild the backend calls against Supabase. The
+> pure-TypeScript logic in `server/src` (reconcile, gstr1/3b, hsn, parsers,
+> vendor-followup) is dependency-free and ports easily to Supabase Edge Functions.
 
 ---
 
@@ -101,8 +101,8 @@ approaches talk to it.
 - Start command: `npm start`
 - You get a URL like `https://gst-helper-backend.onrender.com`. Test `/health`.
 
-**Frontend** (Vercel / Netlify / Lovable):
-- Root directory: `client`
+**Frontend** (Lovable / Vercel / Netlify):
+- Root directory: repo root
 - Build command: `npm run build`  ·  Output dir: `dist`
 - Set env var `VITE_API_BASE` to your backend URL.
 
