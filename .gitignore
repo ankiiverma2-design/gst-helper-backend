@@ -11,6 +11,12 @@ build/
 .env.*
 !.env.example
 
+# Local database (node:sqlite persistence)
+data/
+*.sqlite
+*.sqlite-journal
+*.db
+
 # Logs
 *.log
 npm-debug.log*

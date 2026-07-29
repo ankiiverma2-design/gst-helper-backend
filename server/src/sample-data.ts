@@ -12,7 +12,7 @@ import type { Invoice } from './types.ts';
 // The seller's own purchase register (their books).
 export const samplePurchaseRegister: Invoice[] = [
   {
-    supplierGstin: '27AABCU9603R1ZM',
+    supplierGstin: '27AABCU9603R1ZN',
     supplierName: 'Mumbai Packaging Supplies',
     invoiceNo: 'MPS/2026/104',
     invoiceDate: '2026-07-05',
@@ -26,14 +26,14 @@ export const samplePurchaseRegister: Invoice[] = [
     tax: { taxableValue: 120000, cgst: 0, sgst: 0, igst: 21600, cess: 0 },
   },
   {
-    supplierGstin: '27AACCG1234H1Z8',
+    supplierGstin: '27AACCG1234H1ZY',
     supplierName: 'Pune Logistics',
     invoiceNo: 'PL/07/221',
     invoiceDate: '2026-07-15',
     tax: { taxableValue: 20000, cgst: 1800, sgst: 1800, igst: 0, cess: 0 },
   },
   {
-    supplierGstin: '27AAECS5555K1Z1',
+    supplierGstin: '27AAECS5555K1ZX',
     supplierName: 'Sunrise Stationers',
     invoiceNo: 'SS-3390',
     invoiceDate: '2026-07-20',
@@ -46,7 +46,7 @@ export const samplePurchaseRegister: Invoice[] = [
 export const sampleGstr2b: Invoice[] = [
   {
     // matches MPS/2026/104 exactly
-    supplierGstin: '27AABCU9603R1ZM',
+    supplierGstin: '27AABCU9603R1ZN',
     supplierName: 'Mumbai Packaging Supplies',
     invoiceNo: 'MPS-2026-104', // keyed with different separators on purpose
     invoiceDate: '2026-07-05',
@@ -62,7 +62,7 @@ export const sampleGstr2b: Invoice[] = [
   },
   {
     // Sunrise SS-3390 present in 2B (but books marked it ineligible)
-    supplierGstin: '27AAECS5555K1Z1',
+    supplierGstin: '27AAECS5555K1ZX',
     supplierName: 'Sunrise Stationers',
     invoiceNo: 'SS-3390',
     invoiceDate: '2026-07-20',
@@ -85,16 +85,16 @@ export const sampleSales: Array<
   Invoice & { buyerGstin?: string; placeOfSupply?: string }
 > = [
   {
-    supplierGstin: '27AAAAA0000A1Z5', // the seller's own GSTIN
-    buyerGstin: '27BBBBB1111B1Z4',
+    supplierGstin: '27AAAAA0000A1Z2', // the seller's own GSTIN
+    buyerGstin: '27BBBBB1111B1ZN',
     placeOfSupply: '27',
     invoiceNo: 'S-2026-01',
     invoiceDate: '2026-07-08',
     tax: { taxableValue: 200000, cgst: 18000, sgst: 18000, igst: 0, cess: 0 },
   },
   {
-    supplierGstin: '27AAAAA0000A1Z5',
-    buyerGstin: '24CCCCC2222C1Z3',
+    supplierGstin: '27AAAAA0000A1Z2',
+    buyerGstin: '24CCCCC2222C1ZE',
     placeOfSupply: '24',
     invoiceNo: 'S-2026-02',
     invoiceDate: '2026-07-14',

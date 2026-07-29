@@ -44,6 +44,33 @@ export interface Invoice {
    * blocked credits under Sec 17(5)) are ineligible even if they appear in 2B.
    */
   itcEligible?: boolean;
+
+  // --- Optional fields used for GSTR-1 (outward supplies) ---
+  /** HSN/SAC code of the goods or service. */
+  hsn?: string;
+  /** Short description of the item. */
+  description?: string;
+  /** Unit Quantity Code, e.g. NOS, KGS, PCS. */
+  uqc?: string;
+  /** Quantity supplied. */
+  quantity?: number;
+  /** Combined GST rate as a percentage, e.g. 18. */
+  rate?: number;
+}
+
+/** One row of the HSN-wise summary required in GSTR-1. */
+export interface HsnSummaryRow {
+  hsn: string;
+  description?: string;
+  uqc: string;
+  totalQuantity: number;
+  rate: number;
+  totalValue: number; // taxable + all taxes
+  taxableValue: number;
+  igst: number;
+  cgst: number;
+  sgst: number;
+  cess: number;
 }
 
 /** How a purchase-register invoice lines up against GSTR-2B. */

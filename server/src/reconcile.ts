@@ -43,13 +43,8 @@ export function normalizeInvoiceNo(raw: string): string {
     .replace(/^0+(?=\d)/, ''); // drop leading zeros before a digit run
 }
 
-/** Basic GSTIN sanity check: 15 chars, correct structural pattern. */
-export function isValidGstin(gstin: string): boolean {
-  // 2 digit state code | 10 char PAN | 1 entity digit | 'Z' | 1 checksum char
-  return /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
-    gstin.toUpperCase(),
-  );
-}
+// GSTIN validation (structure + official check digit) lives in ./gstin.ts.
+export { isValidGstin, isValidGstinStructure, gstinCheckDigit } from './gstin.ts';
 
 function keyOf(inv: Invoice): string {
   return `${inv.supplierGstin.toUpperCase()}::${normalizeInvoiceNo(inv.invoiceNo)}`;

@@ -6,7 +6,7 @@ import { formatInr } from '../lib/format.ts';
 import type { Invoice, TaxBreakup } from '../lib/types.ts';
 
 export default function ReturnsPage() {
-  const { sales, gstr3b, runGstr3b, loading } = useAppStore();
+  const { sales, gstr3b, runGstr3b, hsn, runHsn, loading } = useAppStore();
   const [gstr1Status, setGstr1Status] = useState<string | null>(null);
 
   async function handleExportGstr1() {
@@ -98,6 +98,59 @@ export default function ReturnsPage() {
             </Link>{' '}
             first.
           </p>
+        )}
+      </section>
+
+      {/* HSN summary */}
+      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-slate-900">HSN-wise summary</h2>
+        <p className="mt-1 text-sm text-slate-500">
+          Sales grouped by HSN code and tax rate — required in GSTR-1.
+        </p>
+        <button
+          onClick={runHsn}
+          disabled={loading || sales.length === 0}
+          className="mt-4 rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-600 disabled:opacity-40"
+        >
+          Compute HSN summary
+        </button>
+
+        {hsn && hsn.length > 0 && (
+          <div className="mt-4 overflow-x-auto rounded-lg border border-slate-200">
+            <table className="min-w-full divide-y divide-slate-200 text-sm">
+              <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+                <tr>
+                  <th className="px-3 py-2">HSN</th>
+                  <th className="px-3 py-2">Rate %</th>
+                  <th className="px-3 py-2 text-right">Qty</th>
+                  <th className="px-3 py-2 text-right">Taxable</th>
+                  <th className="px-3 py-2 text-right">IGST</th>
+                  <th className="px-3 py-2 text-right">CGST</th>
+                  <th className="px-3 py-2 text-right">SGST</th>
+                  <th className="px-3 py-2 text-right">Total</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {hsn.map((r, i) => (
+                  <tr key={`${r.hsn}-${r.rate}-${i}`}>
+                    <td className="px-3 py-2 font-medium text-slate-900">{r.hsn}</td>
+                    <td className="px-3 py-2">{r.rate}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{r.totalQuantity}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{formatInr(r.taxableValue)}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{formatInr(r.igst)}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{formatInr(r.cgst)}</td>
+                    <td className="px-3 py-2 text-right tabular-nums">{formatInr(r.sgst)}</td>
+                    <td className="px-3 py-2 text-right tabular-nums font-medium">
+                      {formatInr(r.totalValue)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {hsn && hsn.length === 0 && (
+          <p className="mt-3 text-sm text-slate-500">No sales to summarize.</p>
         )}
       </section>
     </div>

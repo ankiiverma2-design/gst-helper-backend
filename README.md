@@ -119,16 +119,34 @@ All JSON. CORS open. Full details in
 | `GET /api/sample` | Sample purchase register + GSTR-2B + sales |
 | `POST /api/reconcile` | Core: compare books vs GSTR-2B |
 | `POST /api/gstr3b` | Monthly tax-payable summary |
-| `POST /api/gstr1` | Portal-ready GSTR-1 JSON |
+| `POST /api/gstr1` | Portal-ready GSTR-1 JSON (B2B, B2CS, B2CL, CDNR, EXP) |
+| `POST /api/hsn-summary` | HSN-wise summary of sales |
+| `POST /api/vendor-followup` | Per-supplier list of ITC problems + messages |
+| `POST /api/parse/purchase-register-csv` | Parse a CSV purchase register |
+| `POST /api/parse/gstr2b` | Parse portal GSTR-2B JSON |
+| `GET /api/periods` | List saved filing periods |
+| `POST /api/periods` | Save a filing period |
+| `GET /api/periods/:id` | Load a filing period |
+| `DELETE /api/periods/:id` | Delete a filing period |
 
-Run backend tests: `cd server && npm test` (9 tests).
+Run backend tests: `cd server && npm test` (33 tests).
 
 ---
 
+## Features
+
+- ✅ **ITC reconciliation** (books vs GSTR-2B) with claimable / at-risk / unclaimed
+- ✅ **GSTIN validation** with the official check-digit algorithm
+- ✅ **File import** — CSV purchase register + portal GSTR-2B JSON parsers
+- ✅ **HSN-wise summary** for GSTR-1
+- ✅ **GSTR-1 export** with B2B, B2CS, B2CL, credit/debit notes (CDNR), exports (EXP)
+- ✅ **GSTR-3B** monthly tax-payable summary
+- ✅ **Vendor follow-up** — who to chase, with ready-to-send messages
+- ✅ **Persistence** of filing periods via built-in SQLite (zero external deps)
+
 ## Roadmap
 
-- CSV/Excel + GSTR-2B JSON **file parsers** (real seller data → `Invoice[]`)
-- **Supabase** persistence (users, invoices, filing periods)
-- HSN summary + more GSTR-1 sections
+- Excel (.xlsx) import in addition to CSV
 - **GSP integration** for actual filing (requires licence)
 - Multi-tenant auth & isolation
+- Additional GSTR-1 sections (advances, amendments)

@@ -76,3 +76,55 @@ export interface SampleData {
   gstr2b: Invoice[];
   sales: Invoice[];
 }
+
+export interface HsnSummaryRow {
+  hsn: string;
+  description?: string;
+  uqc: string;
+  totalQuantity: number;
+  rate: number;
+  totalValue: number;
+  taxableValue: number;
+  igst: number;
+  cgst: number;
+  sgst: number;
+  cess: number;
+}
+
+export interface VendorFollowUpInvoice {
+  invoiceNo: string;
+  invoiceDate?: string;
+  issue: 'MISSING_IN_2B' | 'MISMATCH';
+  itcInBooks: number;
+  itcIn2B: number;
+  itcDifference: number;
+}
+
+export interface VendorFollowUp {
+  supplierGstin: string;
+  supplierName?: string;
+  atRiskItc: number;
+  mismatchItcDifference: number;
+  invoiceCount: number;
+  invoices: VendorFollowUpInvoice[];
+  suggestedMessage: string;
+}
+
+export interface ParseResult {
+  invoices: Invoice[];
+  errors: string[];
+}
+
+export interface FilingPeriodSummary {
+  id: number;
+  gstin: string;
+  period: string; // MMYYYY
+  updatedAt: string;
+  counts: { purchaseRegister: number; gstr2b: number; sales: number };
+}
+
+export interface FilingPeriodRecord extends FilingPeriodSummary {
+  purchaseRegister: Invoice[];
+  gstr2b: Invoice[];
+  sales: Invoice[];
+}

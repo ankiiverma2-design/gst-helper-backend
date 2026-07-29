@@ -9,6 +9,11 @@ import type {
   Invoice,
   ReconciliationReport,
   SampleData,
+  HsnSummaryRow,
+  VendorFollowUp,
+  ParseResult,
+  FilingPeriodSummary,
+  FilingPeriodRecord,
 } from './types.ts';
 
 const DEFAULT_BASE =
@@ -84,4 +89,60 @@ export function buildGstr1(
     method: 'POST',
     body: JSON.stringify({ supplierGstin, filingPeriod, b2bSales }),
   });
+}
+
+export function hsnSummary(sales: Invoice[]): Promise<{ rows: HsnSummaryRow[] }> {
+  return request('/api/hsn-summary', {
+    method: 'POST',
+    body: JSON.stringify({ sales }),
+  });
+}
+
+export function vendorFollowUp(
+  purchaseRegister: Invoice[],
+  gstr2b: Invoice[],
+): Promise<{ vendors: VendorFollowUp[] }> {
+  return request('/api/vendor-followup', {
+    method: 'POST',
+    body: JSON.stringify({ purchaseRegister, gstr2b }),
+  });
+}
+
+export function parsePurchaseCsv(csv: string): Promise<ParseResult> {
+  return request('/api/parse/purchase-register-csv', {
+    method: 'POST',
+    body: JSON.stringify({ csv }),
+  });
+}
+
+export function parseGstr2b(json: unknown): Promise<ParseResult> {
+  return request('/api/parse/gstr2b', {
+    method: 'POST',
+    body: JSON.stringify({ json }),
+  });
+}
+
+// ---- Persistence: filing periods ----
+
+export function listPeriods(gstin?: string): Promise<{ periods: FilingPeriodSummary[] }> {
+  const q = gstin ? `?gstin=${encodeURIComponent(gstin)}` : '';
+  return request(`/api/periods${q}`);
+}
+
+export function savePeriod(input: {
+  gstin: string;
+  period: string;
+  purchaseRegister: Invoice[];
+  gstr2b: Invoice[];
+  sales: Invoice[];
+}): Promise<{ id: number }> {
+  return request('/api/periods', { method: 'POST', body: JSON.stringify(input) });
+}
+
+export function getPeriod(id: number): Promise<FilingPeriodRecord> {
+  return request(`/api/periods/${id}`);
+}
+
+export function deletePeriod(id: number): Promise<{ deleted: boolean }> {
+  return request(`/api/periods/${id}`, { method: 'DELETE' });
 }

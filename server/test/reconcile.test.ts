@@ -18,8 +18,13 @@ test('invoice number normalization ignores case and separators', () => {
   assert.equal(normalizeInvoiceNo('0012'), '12');
 });
 
-test('GSTIN validation accepts a well-formed GSTIN and rejects junk', () => {
-  assert.ok(isValidGstin('27AABCU9603R1ZM'));
+test('GSTIN validation checks structure AND the official check digit', () => {
+  // Valid: correct structure and correct checksum (last char).
+  assert.ok(isValidGstin('27AABCU9603R1ZN'));
+  assert.ok(isValidGstin('29AAGCB7383J1Z4'));
+  // Wrong check digit -> rejected even though structure is fine.
+  assert.ok(!isValidGstin('27AABCU9603R1ZM'));
+  // Junk / wrong length.
   assert.ok(!isValidGstin('BADGSTIN'));
   assert.ok(!isValidGstin('27AABCU9603R1Z')); // 14 chars
 });

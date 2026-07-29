@@ -7,9 +7,9 @@
     "node": ">=22.6.0"
   },
   "scripts": {
-    "start": "node --experimental-strip-types src/server.ts",
-    "dev": "node --watch --experimental-strip-types src/server.ts",
-    "test": "node --experimental-strip-types --test test/*.test.ts",
+    "start": "node --experimental-strip-types --experimental-sqlite src/server.ts",
+    "dev": "node --watch --experimental-strip-types --experimental-sqlite src/server.ts",
+    "test": "node --experimental-strip-types --experimental-sqlite --test test/*.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "keywords": ["gst", "reconciliation", "gstr-2b", "gstr-1", "gstr-3b", "india", "itc"],

@@ -2,6 +2,7 @@ import { NavLink, Route, Routes } from 'react-router-dom';
 import UploadPage from './pages/UploadPage.tsx';
 import DashboardPage from './pages/DashboardPage.tsx';
 import InvoicesPage from './pages/InvoicesPage.tsx';
+import VendorsPage from './pages/VendorsPage.tsx';
 import ReturnsPage from './pages/ReturnsPage.tsx';
 import { useAppStore } from './store.tsx';
 
@@ -24,7 +25,7 @@ function NavItem({ to, label }: { to: string; label: string }) {
 }
 
 export default function App() {
-  const { error, loading } = useAppStore();
+  const { error, loading, notice } = useAppStore();
 
   return (
     <div className="mx-auto flex min-h-full max-w-6xl flex-col px-4 pb-16">
@@ -44,6 +45,7 @@ export default function App() {
           <NavItem to="/" label="Upload" />
           <NavItem to="/dashboard" label="Dashboard" />
           <NavItem to="/invoices" label="Invoices" />
+          <NavItem to="/vendors" label="Vendors" />
           <NavItem to="/returns" label="Returns" />
         </nav>
       </header>
@@ -51,6 +53,11 @@ export default function App() {
       {loading && (
         <div className="mb-4 rounded-lg border border-brand-100 bg-brand-50 px-4 py-2 text-sm text-brand-700">
           Working…
+        </div>
+      )}
+      {notice && !loading && (
+        <div className="mb-4 rounded-lg border border-green-200 bg-green-50 px-4 py-2 text-sm text-green-700">
+          {notice}
         </div>
       )}
       {error && (
@@ -67,6 +74,7 @@ export default function App() {
           <Route path="/" element={<UploadPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/invoices" element={<InvoicesPage />} />
+          <Route path="/vendors" element={<VendorsPage />} />
           <Route path="/returns" element={<ReturnsPage />} />
         </Routes>
       </main>
