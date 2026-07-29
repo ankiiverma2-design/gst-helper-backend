@@ -1,0 +1,50 @@
+# Render Blueprint for the GST Helper.
+#
+# Defines two free services:
+#   1. gst-helper-backend  — the zero-dependency Node API (folder: server/)
+#   2. gst-helper-frontend — the Vite React app (repo root), a static site
+#
+# NOTE: If you host the frontend in Lovable instead, you can delete the
+# "gst-helper-frontend" service below and keep only the backend.
+
+services:
+  # ---------------------------------------------------------------- backend
+  - type: web
+    name: gst-helper-backend
+    runtime: node
+    rootDir: server
+    plan: free
+    # No build step needed — the backend has zero dependencies and runs .ts
+    # directly via Node's type stripping.
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      # Node >= 22.6 is required for --experimental-strip-types and node:sqlite.
+      - key: NODE_VERSION
+        value: "22.11.0"
+      # Where the SQLite file lives. NOTE: the free tier filesystem is ephemeral,
+      # so saved filing periods reset on restart. Use a persistent disk or
+      # Supabase/Postgres for durable storage.
+      - key: GST_DB_PATH
+        value: "data/gst-helper.db"
+
+  # --------------------------------------------------------------- frontend
+  # Optional: skip this if you host the frontend in Lovable.
+  - type: web
+    name: gst-helper-frontend
+    runtime: static
+    rootDir: .
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      # Point the frontend at the backend service above.
+      # Update this to your backend's actual URL after the first deploy.
+      - key: VITE_API_BASE
+        value: "https://gst-helper-backend.onrender.com"
+    routes:
+      # SPA fallback so client-side routes (e.g. /dashboard) work on refresh.
+      - type: rewrite
+        source: /*
+        destination: /index.html
