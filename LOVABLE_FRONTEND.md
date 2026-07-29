@@ -11,8 +11,14 @@ the UI; it calls this API over `fetch`.
 
 ## Step 1 — Deploy the backend and get its URL
 
-Deploy this repo to any free Node host (Render, Railway, or Fly.io). You'll get a
-public URL like `https://gst-helper.onrender.com`. Call that your `API_BASE`.
+Deploy the backend to any free Node host (Render, Railway, or Fly.io). Set the
+**root directory to `server`**, leave the build command empty, and use
+`npm start` as the start command. You'll get a public URL like
+`https://gst-helper.onrender.com`. Call that your `API_BASE`.
+
+> Note: this repo already ships a full frontend in `client/`. Use this document
+> only if you want Lovable to generate a *fresh* UI, or as the API reference
+> while editing the existing `client/` app in Lovable.
 
 To test it's live, open `API_BASE/health` in a browser — you should see
 `{"status":"ok",...}`.
