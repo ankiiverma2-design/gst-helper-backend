@@ -21,6 +21,15 @@ government's portal-upload format.
 
 ---
 
+## Documentation
+
+- **[docs/API.md](./docs/API.md)** — full endpoint reference
+- **[DEPLOY.md](./DEPLOY.md)** — step-by-step Render + Lovable deployment
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** — dev setup & how to run tests
+- **[LOVABLE_FRONTEND.md](./LOVABLE_FRONTEND.md)** — building/editing the UI in Lovable
+
+---
+
 ## Repository layout
 
 The **frontend lives at the repo root** (so Lovable detects it automatically),
