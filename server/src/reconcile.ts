@@ -44,7 +44,6 @@ export function normalizeInvoiceNo(raw: string): string {
 }
 
 // GSTIN validation (structure + official check digit) lives in ./gstin.ts.
-export { isValidGstin, isValidGstinStructure, gstinCheckDigit } from './gstin.ts';
 
 function keyOf(inv: Invoice): string {
   return `${inv.supplierGstin.toUpperCase()}::${normalizeInvoiceNo(inv.invoiceNo)}`;

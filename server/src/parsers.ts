@@ -94,10 +94,6 @@ const HEADER_ALIASES: Record<string, string> = {
   itceligible: 'itcEligible',
   eligible: 'itcEligible',
   invoicevalue: 'invoiceValue',
-  hsn: 'hsn',
-  hsncode: 'hsn',
-  rate: 'rate',
-  taxrate: 'rate',
 };
 
 function toNumber(v: string | undefined): number {

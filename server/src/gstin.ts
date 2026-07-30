@@ -42,8 +42,3 @@ export function isValidGstin(gstin: string): boolean {
   if (!isValidGstinStructure(g)) return false;
   return gstinCheckDigit(g.slice(0, 14)) === g[14];
 }
-
-/** Extract the 2-digit state code from a GSTIN (or '' if malformed). */
-export function stateCodeOf(gstin: string): string {
-  return /^[0-9]{2}/.test(gstin) ? gstin.slice(0, 2) : '';
-}

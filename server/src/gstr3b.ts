@@ -12,7 +12,7 @@
  */
 
 import type { Invoice, TaxBreakup, Gstr3bSummary } from './types.ts';
-import { round2, itcOf } from './reconcile.ts';
+import { round2 } from './reconcile.ts';
 
 function emptyBreakup(): TaxBreakup {
   return { taxableValue: 0, cgst: 0, sgst: 0, igst: 0, cess: 0 };
@@ -73,11 +73,4 @@ export function computeGstr3b(
       total: round2(cgst + sgst + igst + cess),
     },
   };
-}
-
-/** Convenience: total ITC across a set of invoices (respects eligibility). */
-export function totalEligibleItc(purchases: Invoice[]): number {
-  return round2(
-    purchases.reduce((s, p) => s + (p.itcEligible === false ? 0 : itcOf(p.tax)), 0),
-  );
 }

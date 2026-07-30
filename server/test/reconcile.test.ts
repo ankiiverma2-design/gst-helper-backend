@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { reconcile, normalizeInvoiceNo, isValidGstin, formatInr } from '../src/reconcile.ts';
+import { reconcile, normalizeInvoiceNo, formatInr } from '../src/reconcile.ts';
+import { isValidGstin } from '../src/gstin.ts';
 import { computeGstr3b } from '../src/gstr3b.ts';
 import { buildGstr1Json } from '../src/gstr1.ts';
 import {
